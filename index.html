@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROVA FÁCIL 🎓 - Estuda por Foto ou Disciplina!</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#1b3b6f">
+    <style>
+        /* ==================== ESTILOS DUOLINGO & MODO CLARO/ESCURO ==================== */
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #2b2b2b;
+            --text-secondary: #555555;
+            --border-color: #d1d5db;
+            
+            /* SUBSTITUÍDO O VERDE POR AZUL ESCURO / AZUL NOITE */
+            --primary: #1b3b6f;
+            --primary-shadow: #0f2347;
+            --primary-hover: #214888;
+            
+            --danger: #ff4b4b;
+            --danger-shadow: #ea2b2b;
+            --danger-bg: #ffdfe0;
+            --success-bg: #e0f2fe;
+            --correct-color: #0369a1;
+            --incorrect-color: #ea2b2b;
+            
+            --blue: #0284c7;
+            --blue-shadow: #0369a1;
+            --gray-btn: #e5e7eb;
+            --gray-shadow: #9ca3af;
+            --card-shadow: 0 8px 0px var(--border-color);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --danger-bg: #451a1a;
+            --success-bg: #0c4a6e;
+            --gray-btn: #334155;
+            --gray-shadow: #1e293b;
+            --card-shadow: 0 8px 0px #020617;
+            
+            --primary: #2563eb;
+            --primary-shadow: #1d4ed8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            /* TIPO DE LETRA ALTERADO PARA TIMES */
+            font-family: 'Times New Roman', Times, serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            position: relative;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Botão de Tema */
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-bottom-width: 4px;
+            border-radius: 16px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 100;
+        }
+        .theme-toggle-btn:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        /* Top Bar */
+        .duo-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .btn-close-quiz {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .progress-bar-outer {
+            flex: 1;
+            height: 16px;
+            background: var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+        .lives-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+            color: var(--danger);
+            font-size: 18px;
+        }
+
+        /* Card Principal */
+        #main-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .duo-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+        }
+
+        /* Abas */
+        .mode-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-bottom-width: 4px;
+            border-radius: 14px;
+            font-weight: bold;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(27, 59, 111, 0.1);
+        }
+
+        /* Inputs & Seletor */
+        .file-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 3px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .file-dropzone input { display: none; }
+        .mascot-icon { font-size: 48px; margin-bottom: 10px; }
+
+        .duo-select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: 2px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: bold;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        /* Botões Estilo Duolingo */
+        .duo-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .duo-btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 5px 0 var(--primary-shadow);
+        }
+        .duo-btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 var(--primary-shadow);
+        }
+
+        /* Opções do Quiz */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .option-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-bottom-width: 4px;
+            border-radius: 16px;
+            padding: 16px 20px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+        .option-card:hover { background: rgba(0,0,0,0.03); }
+        .option-card.selected {
+            border-color: var(--blue);
+            background: rgba(2, 132, 199, 0.1);
+            color: var(--blue);
+        }
+        .option-card.correct {
+            border-color: var(--correct-color) !important;
+            background: var(--success-bg) !important;
+            color: var(--correct-color) !important;
+        }
+        .option-card.incorrect {
+            border-color: var(--incorrect-color) !important;
+            background: var(--danger-bg) !important;
+            color: var(--incorrect-color) !important;
+        }
+
+        /* Rodapé de Feedback */
+        .feedback-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            border-top: 2px solid var(--border-color);
+            z-index: 10;
+        }
+        .feedback-bar.correct-bg { background-color: var(--success-bg); }
+        .feedback-bar.incorrect-bg { background-color: var(--danger-bg); }
+
+        .feedback-content {
+            width: 100%;
+            max-width: 650px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .feedback-info { display: flex; flex-direction: column; gap: 5px; }
+        .feedback-title { font-size: 20px; font-weight: 800; }
+        .feedback-bar.correct-bg .feedback-title { color: var(--correct-color); }
+        .feedback-bar.incorrect-bg .feedback-title { color: var(--incorrect-color); }
+        .feedback-text { font-size: 14px; font-weight: 600; }
+
+        /* Cartão de Pontuação Final */
+        .score-card {
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .score-badge {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        /* Loader */
+        .spinner {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <!-- Botão de Tema -->
+    <button id="theme-toggle" class="theme-toggle-btn" onclick="alternarTema()" aria-label="Alternar Tema">
+        <span id="theme-icon">🌙</span>
+    </button>
+
+    <div class="container animate__animated animate__fadeIn">
+        
+        <!-- BARRA SUPERIOR DO QUIZ -->
+        <header id="top-bar" class="duo-header hidden">
+            <button class="btn-close-quiz" onclick="confirmarSair()">✕</button>
+            <div class="progress-bar-outer">
+                <div id="progress-bar" class="progress-bar-inner" style="width: 0%;"></div>
+            </div>
+            <div class="lives-container">
+                <span class="heart-icon">❤️</span>
+                <span id="lives-count">5</span>
+            </div>
+        </header>
+
+        <!-- CABEÇALHO PRINCIPAL -->
+        <header id="main-header">
+            <h1 class="logo">JOGO DE APRENDIZADO 🎓</h1>
+            <p style="color: var(--text-secondary); margin-top: 5px;">Aprende jogando com fotos ou disciplinas!</p>
+        </header>
+
+        <!-- CONFIGURAÇÃO/UPLOAD -->
+        <main id="upload-section" class="duo-card animate__animated animate__zoomIn">
+            <h2 style="font-size: 20px;">⚡ Escolhe como queres jogar</h2>
+            
+            <div class="mode-tabs">
+                <button type="button" id="tab-foto" class="tab-btn active" onclick="mudarModo('foto')">🎓 Tirar Foto</button>
+                <button type="button" id="tab-disciplina" class="tab-btn" onclick="mudarModo('disciplina')">📚 Disciplinas</button>
+            </div>
+
+            <form id="quiz-form" onsubmit="enviarSolicitacao(event)">
+                <input type="hidden" id="modo" name="modo" value="foto">
+
+                <!-- UPLOAD DE FOTO -->
+                <div id="campo-foto" class="mode-content">
+                    <label for="foto" class="file-dropzone">
+                        <div class="mascot-icon">🦊</div>
+                        <span id="file-label">Tira foto dos teus apontamentos</span>
+                        <input type="file" id="foto" name="foto" accept="image/*" onchange="atualizarNomeFicheiro()">
+                    </label>
+                </div>
+
+                <!-- SELEÇÃO DE DISCIPLINA -->
+                <div id="campo-disciplina" class="mode-content hidden">
+                    <label for="disciplina" style="font-weight: bold;">Escolhe a Disciplina:</label>
+                    <select id="disciplina" name="disciplina" class="duo-select">
+                        <option value="Informática">💻 Informática</option>
+                        <option value="Matemática">📐 Matemática</option>
+                        <option value="Língua Portuguesa">📖 Língua Portuguesa</option>
+                        <option value="Física">⚡ Física</option>
+                        <option value="Química">🧪 Química</option>
+                        <option value="História">📜 História</option>
+                        <option value="Biologia">🧬 Biologia</option>
+                        <option value="Inglês">🗣️ Inglês</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="btn-comecar" class="duo-btn duo-btn-primary">BORA COMEÇAR!</button>
+                <center><p style="color: var(--text-secondary); margin-top: 5px;"> Desenvolvedor: Arsénio Cassinda!</p></center>
+
+            </form>
+        </main>
+
+        <!-- CARREGAMENTO -->
+        <div id="loading-section" class="duo-card hidden" style="text-align: center;">
+            <div class="spinner"></div>
+            <h3>A Raposa 🦊 está a ler a tua matéria...</h3>
+            <p style="color: var(--text-secondary); margin-top: 10px;">Isto leva apenas alguns segundos.</p>
+        </div>
+
+        <!-- PERGUNTAS DO QUIZ -->
+        <section id="quiz-section" class="duo-card hidden animate__animated animate__fadeIn">
+            <h2 id="question-text" style="font-size: 22px; margin-bottom: 20px;">Texto da pergunta...</h2>
+            <div id="options-container" class="options-grid"></div>
+            <button id="btn-verificar" class="duo-btn duo-btn-primary" onclick="verificarResposta()" disabled>VERIFICAR</button>
+        </section>
+
+        <!-- RESULTADOS FINAIS COM PONTUAÇÃO E MOTIVAÇÃO -->
+        <section id="result-section" class="duo-card hidden text-center" style="text-align: center;">
+            <div class="mascot-icon" id="result-icon">🎉</div>
+            <h2 id="result-title">Fim do Quiz!</h2>
+            
+            <div class="score-card">
+                <span style="font-size: 14px; font-weight: bold; color: var(--text-secondary);">PERGUNTAS ACERTADAS</span>
+                <span class="score-badge" id="result-score">0 / 15</span>
+                <span id="result-percentage" style="font-weight: bold; color: var(--blue);">Aproveitamento: 0%</span>
+            </div>
+
+            <p id="result-details" style="font-size: 18px; margin: 15px 0; font-weight: 700; color: var(--text-color);"></p>
+            <button class="duo-btn duo-btn-primary" onclick="reiniciarQuiz()">TENTAR NOVAMENTE</button>
+        </section>
+
+        <!-- BARRA INFERIOR DE FEEDBACK -->
+        <div id="feedback-bar" class="feedback-bar hidden animate__animated animate__slideInUp">
+            <div class="feedback-content">
+                <div class="feedback-info">
+                    <span id="feedback-title" class="feedback-title">Excelente!</span>
+                    <span id="feedback-text" class="feedback-text">Explicação...</span>
+                </div>
+                <button id="btn-proximo" class="duo-btn duo-btn-primary" style="width: auto; padding: 12px 24px; margin: 0;" onclick="proximaPergunta()">CONTINUAR</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT JS -->
+    <script>
+        let perguntas = [];
+        let perguntaAtual = 0;
+        let vidas = 5;
+        let pontos = 0;
+        let opcaoSelecionada = null;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function tocarSom(tipo) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (tipo === 'correto') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } else {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(130.81, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            }
+        }
+
+        function alternarTema() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                icon.textContent = '🌙';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.textContent = '☀️';
+            }
+        }
+
+        function mudarModo(modo) {
+            document.getElementById('modo').value = modo;
+            document.getElementById('tab-foto').classList.toggle('active', modo === 'foto');
+            document.getElementById('tab-disciplina').classList.toggle('active', modo === 'disciplina');
+            document.getElementById('campo-foto').classList.toggle('hidden', modo !== 'foto');
+            document.getElementById('campo-disciplina').classList.toggle('hidden', modo !== 'disciplina');
+        }
+
+        function atualizarNomeFicheiro() {
+            const input = document.getElementById('foto');
+            const label = document.getElementById('file-label');
+            if (input.files.length > 0) {
+                label.textContent = `🎓 ${input.files[0].name}`;
+            }
+        }
+
+        async function enviarSolicitacao(e) {
+            e.preventDefault();
+            const formData = new FormData(document.getElementById('quiz-form'));
+
+            document.getElementById('upload-section').classList.add('hidden');
+            document.getElementById('main-header').classList.add('hidden');
+            document.getElementById('loading-section').classList.remove('hidden');
+
+            try {
+                const res = await fetch('/gerar-quiz', { method: 'POST', body: formData });
+                const data = await res.json();
+                
+                if (data.perguntas && data.perguntas.length > 0) {
+                    perguntas = data.perguntas;
+                    iniciarQuiz();
+                } else {
+                    alert('Erro ao carregar perguntas.');
+                    reiniciarQuiz();
+                }
+            } catch (err) {
+                alert('Ocorreu um erro no servidor.');
+                reiniciarQuiz();
+            }
+        }
+
+        function iniciarQuiz() {
+            perguntaAtual = 0;
+            vidas = 5;
+            pontos = 0;
+            document.getElementById('lives-count').textContent = vidas;
+            document.getElementById('loading-section').classList.add('hidden');
+            document.getElementById('top-bar').classList.remove('hidden');
+            document.getElementById('quiz-section').classList.remove('hidden');
+            carregarPergunta();
+        }
+
+        function carregarPergunta() {
+            opcaoSelecionada = null;
+            document.getElementById('btn-verificar').disabled = true;
+            document.getElementById('feedback-bar').classList.add('hidden');
+
+            const q = perguntas[perguntaAtual];
+            document.getElementById('question-text').textContent = q.pergunta;
+
+            const pct = ((perguntaAtual) / perguntas.length) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.opcoes.forEach((op, idx) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.innerHTML = `<span style="border: 2px solid var(--border-color); width: 28px; height: 28px; border-radius: 8px; display:flex; align-items:center; justify-content:center;">${idx + 1}</span> <span>${op}</span>`;
+                card.onclick = () => selecionarOpcao(idx, card);
+                container.appendChild(card);
+            });
+        }
+
+        function selecionarOpcao(index, cardElement) {
+            document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+            cardElement.classList.add('selected');
+            opcaoSelecionada = index;
+            document.getElementById('btn-verificar').disabled = false;
+        }
+
+        function verificarResposta() {
+            if (opcaoSelecionada === null) return;
+
+            const q = perguntas[perguntaAtual];
+            const cards = document.querySelectorAll('.option-card');
+            const feedbackBar = document.getElementById('feedback-bar');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackText = document.getElementById('feedback-text');
+
+            document.getElementById('btn-verificar').classList.add('hidden');
+            cards.forEach(card => card.style.pointerEvents = 'none');
+
+            if (opcaoSelecionada === q.resposta_correta) {
+                tocarSom('correto');
+                cards[opcaoSelecionada].classList.add('correct');
+                feedbackBar.className = 'feedback-bar correct-bg animate__animated animate__slideInUp';
+                feedbackTitle.textContent = 'Excelente!';
+                feedbackText.textContent = q.explicacao || 'Resposta correta!';
+                pontos++;
+            } else {
+                tocarSom('incorreto');
+                cards[opcaoSelecionada].classList.add('incorrect');
+                cards[q.resposta_correta].classList.add('correct');
+                feedbackBar.className = 'feedback-bar incorrect-bg animate__animated animate__slideInUp';
+                feedbackTitle.textContent = 'A resposta correta é:';
+                feedbackText.textContent = `${q.opcoes[q.resposta_correta]}. ${q.explicacao || ''}`;
+                vidas--;
+                document.getElementById('lives-count').textContent = vidas;
+            }
+
+            feedbackBar.classList.remove('hidden');
+        }
+
+        function proximaPergunta() {
+            document.getElementById('btn-verificar').classList.remove('hidden');
+            document.getElementById('feedback-bar').classList.add('hidden');
+
+            if (vidas <= 0 || perguntaAtual + 1 >= perguntas.length) {
+                finalizarQuiz();
+            } else {
+                perguntaAtual++;
+                carregarPergunta();
+            }
+        }
+
+        function finalizarQuiz() {
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('top-bar').classList.add('hidden');
+            document.getElementById('result-section').classList.remove('hidden');
+
+            const scoreText = document.getElementById('result-score');
+            const percentText = document.getElementById('result-percentage');
+            const detailsText = document.getElementById('result-details');
+            const title = document.getElementById('result-title');
+            const icon = document.getElementById('result-icon');
+
+            const totalRespondidas = perguntaAtual + 1;
+            const percentual = Math.round((pontos / totalRespondidas) * 100);
+
+            scoreText.textContent = `${pontos} / ${totalRespondidas}`;
+            percentText.textContent = `Aproveitamento: ${percentual}%`;
+
+            if (pontos === 0) {
+                icon.textContent = '💔';
+                title.textContent = 'Não desistas!';
+                detailsText.textContent = 'Não conseguiste acertar nenhuma pergunta. Esforça-te mais na próxima!';
+            } else if (pontos === 1) {
+                icon.textContent = '🌱';
+                title.textContent = 'Bom começo!';
+                detailsText.textContent = 'Só conseguiste acertar 1 pergunta. Esforça-te mais!';
+            } else if (pontos < 8) {
+                icon.textContent = '⚡';
+                title.textContent = 'Continua a tentar!';
+                detailsText.textContent = `Conseguiste acertar ${pontos} perguntas. Continua a praticar para melhorar!`;
+            } else if (pontos < 12) {
+                icon.textContent = '🎯';
+                title.textContent = 'Muito bem!';
+                detailsText.textContent = `Conseguiste acertar ${pontos} perguntas. Estás quase lá!`;
+            } else {
+                icon.textContent = '🏆';
+                title.textContent = 'Espetacular!';
+                detailsText.textContent = `Excelente! Acertaste ${pontos} perguntas. Estás no bom caminho!`;
+            }
+        }
+
+        function confirmarSair() {
+            if (confirm("Queres mesmo sair? O teu progresso será perdido.")) {
+                reiniciarQuiz();
+            }
+        }
+
+        function reiniciarQuiz() {
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('quiz-section').classList.add('hidden');
+            document.getElementById('top-bar').classList.add('hidden');
+            document.getElementById('main-header').classList.remove('hidden');
+            document.getElementById('upload-section').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

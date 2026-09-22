@@ -1,0 +1,122 @@
+{
+  "Informática": {
+    "primario": {
+      "Fácil": [
+        {
+          "pergunta": "Qual das seguintes opções é um dispositivo de entrada de dados no computador?",
+          "opcoes": ["Teclado", "Monitor", "Impressora", "Coluna de Som"],
+          "resposta_correta": 0,
+          "explicacao": "O teclado é um dispositivo de entrada porque permite ao utilizador introduzir texto e comandos no computador. O monitor, a impressora e as colunas de som são dispositivos de saída."
+        },
+        {
+          "pergunta": "Qual é a principal função do Rato (Mouse) no computador?",
+          "opcoes": ["Mover o cursor na ecrã e selecionar itens", "Imprimir folhas de papel", "Guardar ficheiros para sempre", "Aumentar o volume da música"],
+          "resposta_correta": 0,
+          "explicacao": "O rato serve para controlar o ponteiro (cursor) na ecrã, permitindo clicar, selecionar e arrastar objetos no sistema."
+        },
+        {
+          "pergunta": "Qual destas atitudes ajuda a cuidar corretamente do computador?",
+          "opcoes": ["Não derramar líquidos sobre o teclado ou monitor", "Lavar o ecrã com água e sabão", "Puxar os cabos da tomada com força", "Deixar o computador ao sol"],
+          "resposta_correta": 0,
+          "explicacao": "Os líquidos e a humidade podem causar um curto-circuito na placa eletrónica e danificar permanentemente o computador."
+        },
+        {
+          "pergunta": "Para que serve o botão Power no computador?",
+          "opcoes": ["Ligar e desligar o equipamento", "Tirar uma fotografia", "Apagar o texto escrito", "Aumentar a velocidade da internet"],
+          "resposta_correta": 0,
+          "explicacao": "O botão Power (Energia) é a tecla física responsável por iniciar o arranque elétrico ou desligar o dispositivo."
+        }
+      ],
+      "Médio": [
+        {
+          "pergunta": "O que significa a sigla USB utilizada nas Pen Drives?",
+          "opcoes": ["Universal Serial Bus", "Unidade de Som Básica", "Ultrafast System Base", "Unidade de Sistema Binário"],
+          "resposta_correta": 0,
+          "explicacao": "USB significa Universal Serial Bus (Barramento Serial Universal), um padrão do mercado para conectar periféricos e transferir dados."
+        },
+        {
+          "pergunta": "Qual destas opções é um exemplo de Sistema Operativo?",
+          "opcoes": ["Windows 11", "Microsoft Word", "Google Chrome", "Paint"],
+          "resposta_correta": 0,
+          "explicacao": "O Windows 11 é o sistema operativo que gere o hardware e os programas. O Word, Chrome e Paint são aplicações de software."
+        }
+      ]
+    }
+  },
+  "Matemática": {
+    "primario": {
+      "Fácil": [
+        {
+          "pergunta": "Quanto é 7 x 8?",
+          "opcoes": ["56", "48", "64", "54"],
+          "resposta_correta": 0,
+          "explicacao": "De acordo com a tabuada da multiplicação, 7 multiplicado por 8 resulta em 56 (7 + 7 + 7 + 7 + 7 + 7 + 7 + 7 = 56)."
+        },
+        {
+          "pergunta": "Qual é o perímetro de um quadrado cujo lado mede 5 cm?",
+          "opcoes": ["20 cm", "25 cm", "10 cm", "15 cm"],
+          "resposta_correta": 0,
+          "explicacao": "O perímetro de um quadrado é a soma dos seus quatro lados iguais: P = 4 x L = 4 x 5 cm = 20 cm."
+        },
+        {
+          "pergunta": "Como se chama o triângulo que tem todos os 3 lados iguais?",
+          "opcoes": ["Triângulo Equilátero", "Triângulo Isósceles", "Triângulo Escaleno", "Triângulo Retângulo"],
+          "resposta_correta": 0,
+          "explicacao": "Um triângulo equilátero possui todos os três lados congruentes (iguais) e ângulos internos de 60 graus."
+        }
+      ]
+    },
+    "secundario_geral": {
+      "Fácil": [
+        {
+          "pergunta": "Qual é o valor da raiz quadrada de 144?",
+          "opcoes": ["12", "14", "10", "16"],
+          "resposta_correta": 0,
+          "explicacao": "A raiz quadrada de 144 é 12 porque 12 x 12 (ou 12²) é igual a 144."
+        },
+        {
+          "pergunta": "Na equação do 2º grau x² - 9 = 0, quais são as raízes reais?",
+          "opcoes": ["x = 3 e x = -3", "x = 9 e x = -9", "Apenas x = 3", "Apenas x = 9"],
+          "resposta_correta": 0,
+          "explicacao": "Resolvendo a equação: x² = 9 => x = ±√9 => x = ±3. Portanto, as soluções são x = 3 e x = -3."
+        }
+      ]
+    }
+  },
+  "Língua Portuguesa": {
+    "primario": {
+      "Fácil": [
+        {
+          "pergunta": "Qual é o plural da palavra 'Cão'?",
+          "opcoes": ["Cães", "Cãos", "Cões", "Cãoes"],
+          "resposta_correta": 0,
+          "explicacao": "O plural correto do substantivo 'cão' é 'cães', seguindo a regra gramatical de alteração do sufixo '-ão' para '-ães'."
+        },
+        {
+          "pergunta": "Identifique o verbo na frase: 'O menino correu para a escola.'",
+          "opcoes": ["correu", "menino", "escola", "para"],
+          "resposta_correta": 0,
+          "explicacao": "A palavra 'correu' é uma forma verbal do verbo 'correr', que indica a ação praticada pelo sujeito (o menino)."
+        }
+      ]
+    }
+  },
+  "Física": {
+    "secundario_geral": {
+      "Médio": [
+        {
+          "pergunta": "Qual é a Primeira Lei de Newton?",
+          "opcoes": ["Princípio da Inércia", "Princípio Fundamental da Dinâmica (F = m.a)", "Ação e Reação", "Lei da Gravitação Universal"],
+          "resposta_correta": 0,
+          "explicacao": "A Primeira Lei de Newton é o Princípio da Inércia: um corpo permanece em repouso ou em movimento retilíneo uniforme a menos que seja atuado por uma força resultante."
+        },
+        {
+          "pergunta": "Qual é a unidade de medida de Força no Sistema Internacional (SI)?",
+          "opcoes": ["Newton (N)", "Joule (J)", "Watt (W)", "Pascal (Pa)"],
+          "resposta_correta": 0,
+          "explicacao": "A unidade de força no SI é o Newton (N). O Joule mede energia, o Watt mede potência e o Pascal mede pressão."
+        }
+      ]
+    }
+  }
+}

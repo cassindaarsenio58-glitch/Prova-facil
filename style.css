@@ -1,0 +1,266 @@
+/* =========================================================
+   VARIÁVEIS DE TEMA E CORES DUOLINGO
+   ========================================================= */
+:root {
+    --duo-green: #58cc02;
+    --duo-green-shadow: #0e110c2c;
+    --duo-blue: #1cb0f6;
+    --duo-blue-shadow: #1899d6;
+    --duo-red: #ff4b4b;
+    --duo-red-shadow: #ea2b2b;
+    --duo-gray: #e5e5e5;
+    --duo-gray-shadow: #cecece;
+    --duo-dark-gray: #4b4b4b;
+    
+    --bg-color: #f7f7f7;
+    --card-bg: #ffffff;
+    --card-border: #e5e5e5;
+    --text-color: #3c3c3c;
+    --text-muted: #777777;
+    
+    --option-bg: #ffffff;
+    --option-border: #e5e5e5;
+    --option-shadow: #cecece;
+}
+
+body.dark-mode {
+    --bg-color: #131f24;
+    --card-bg: #182830;
+    --card-border: #203540;
+    --text-color: #f1f5f9;
+    --text-muted: #94a3b8;
+    
+    --option-bg: #182830;
+    --option-border: #203540;
+    --option-shadow: #101a20;
+}
+
+/* RESET E LAYOUT CENTRALIZADO */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+}
+
+body { 
+    background-color: var(--bg-color); 
+    min-height: 100vh; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 20px 16px; 
+    color: var(--text-color); 
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.container { 
+    width: 100%; 
+    max-width: 460px; 
+    margin: 0 auto;
+}
+
+/* BOTÃO DE TEMA FIXO NO CANTO */
+.theme-toggle-btn { 
+    position: fixed; 
+    top: 16px; 
+    right: 16px; 
+    width: 44px; 
+    height: 44px; 
+    border-radius: 16px; 
+    background: var(--card-bg); 
+    border: 2px solid var(--card-border); 
+    cursor: pointer; 
+    font-size: 1.2rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 100; 
+}
+
+/* CABEÇALHO */
+#main-header { 
+    text-align: center; 
+    margin-bottom: 20px; 
+}
+
+#main-header h1.logo { 
+    font-size: 2.2rem; 
+    font-weight: 900; 
+    color: var(--duo-green); 
+}
+
+#main-header p { 
+    color: var(--text-muted); 
+    font-weight: 700; 
+    font-size: 0.95rem; 
+    margin-top: 4px; 
+}
+
+/* CARTÃO PRINCIPAL */
+.duo-card { 
+    background: var(--card-bg); 
+    border: 2px solid var(--card-border); 
+    border-radius: 24px; 
+    padding: 24px 20px; 
+    box-shadow: 0 6px 0 var(--card-border); 
+}
+
+.duo-card h2 { 
+    font-size: 1.25rem; 
+    font-weight: 800; 
+    margin-bottom: 18px; 
+    text-align: center; 
+}
+
+.hidden { 
+    display: none !important; 
+}
+
+/* ABAS DE SELEÇÃO DE MODO */
+.mode-tabs { 
+    display: flex; 
+    gap: 8px; 
+    margin-bottom: 18px; 
+}
+
+.tab-btn { 
+    flex: 1; 
+    padding: 12px; 
+    border: 2px solid var(--card-border); 
+    border-radius: 14px; 
+    background: var(--card-bg); 
+    color: var(--text-color); 
+    font-weight: 800; 
+    font-size: 0.9rem;
+    cursor: pointer; 
+    transition: all 0.2s; 
+}
+
+.tab-btn.active { 
+    border-color: var(--duo-blue); 
+    background-color: rgba(28, 176, 246, 0.1); 
+    color: var(--duo-blue); 
+}
+
+/* FORMULÁRIO EM COLUNA ÚNICA VERTICAL */
+#quiz-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 6px; 
+    text-align: left; 
+}
+
+.form-group label { 
+    font-weight: 800; 
+    font-size: 0.88rem; 
+    color: var(--text-muted); 
+}
+
+.duo-select { 
+    width: 100%; 
+    padding: 14px; 
+    border: 2px solid var(--card-border); 
+    border-radius: 14px; 
+    background: var(--option-bg); 
+    color: var(--text-color); 
+    font-size: 0.95rem; 
+    font-weight: 700; 
+    outline: none; 
+}
+
+/* DROPZONE DE FICHEIRO */
+.file-dropzone { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    border: 2px dashed var(--duo-blue); 
+    border-radius: 20px; 
+    padding: 22px 16px; 
+    background-color: rgba(28, 176, 246, 0.05); 
+    cursor: pointer; 
+    text-align: center; 
+}
+
+.mascot-icon { 
+    font-size: 2.8rem; 
+    margin-bottom: 6px; 
+}
+
+.file-dropzone span {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.file-dropzone input[type="file"] { 
+    display: none; 
+}
+
+/* BOTÕES TÁTEIS 3D */
+.btn-duo { 
+    width: 100%; 
+    padding: 16px; 
+    border: none; 
+    border-radius: 16px; 
+    font-size: 1rem; 
+    font-weight: 800; 
+    cursor: pointer; 
+    transition: all 0.1s ease; 
+    text-transform: uppercase; 
+}
+
+.btn-green { 
+    background-color: var(--duo-green); 
+    color: #ffffff; 
+    box-shadow: 0 5px 0 var(--duo-green-shadow); 
+}
+
+.btn-green:active { 
+    transform: translateY(4px); 
+    box-shadow: 0 1px 0 var(--duo-green-shadow); 
+}
+
+.btn-blue { background-color: var(--duo-blue); color: #ffffff; box-shadow: 0 5px 0 var(--duo-blue-shadow); }
+.btn-whatsapp { background-color: #25d366; color: #ffffff; box-shadow: 0 5px 0 #1da851; }
+.btn-gray { background-color: var(--duo-gray); color: var(--duo-dark-gray); box-shadow: 0 5px 0 var(--duo-gray-shadow); }
+
+/* BARRA SUPERIOR DO QUIZ */
+.duo-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.btn-close-quiz { background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; font-weight: 800; }
+.progress-bar-outer { flex: 1; height: 16px; background-color: var(--duo-gray); border-radius: 10px; overflow: hidden; }
+.progress-bar-inner { height: 100%; background-color: var(--duo-green); border-radius: 10px; transition: width 0.4s ease; }
+.lives-container { display: flex; align-items: center; gap: 4px; font-weight: 800; color: var(--duo-red); font-size: 1.1rem; }
+
+/* QUIZ E RESPOSTAS */
+.xp-badge { display: inline-block; background: rgba(255, 200, 0, 0.15); color: #d97706; padding: 6px 14px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; margin-bottom: 16px; }
+.question-title { font-size: 1.15rem; font-weight: 800; line-height: 1.4; margin-bottom: 20px; }
+.options-grid { display: flex; flex-direction: column; gap: 12px; }
+.option-btn { background-color: var(--option-bg); border: 2px solid var(--option-border); box-shadow: 0 4px 0 var(--option-shadow); color: var(--text-color); padding: 16px; border-radius: 16px; font-size: 0.98rem; font-weight: 700; text-align: left; cursor: pointer; }
+.option-btn.correct { background-color: #d7ffb8 !important; border-color: var(--duo-green) !important; box-shadow: 0 4px 0 var(--duo-green-shadow) !important; color: #2b6100 !important; }
+.option-btn.wrong { background-color: #ffd8d8 !important; border-color: var(--duo-red) !important; box-shadow: 0 4px 0 var(--duo-red-shadow) !important; color: #800000 !important; }
+
+/* CARREGAMENTO, FEEDBACK E RESULTADOS */
+.loader-container { display: flex; flex-direction: column; align-items: center; margin: 20px 0; }
+.duo-spinner { width: 50px; height: 50px; border: 5px solid var(--duo-gray); border-top: 5px solid var(--duo-green); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.mascot-thinking { font-size: 2rem; margin-top: -38px; margin-bottom: 20px; }
+.duo-feedback-sheet { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px; z-index: 200; }
+.duo-feedback-sheet.correct-sheet { background-color: #d7ffb8; border-top: 3px solid var(--duo-green); color: #2b6100; }
+.duo-feedback-sheet.wrong-sheet { background-color: #ffd8d8; border-top: 3px solid var(--duo-red); color: #800000; }
+.feedback-content { max-width: 460px; margin: 0 auto; }
+.feedback-header { display: flex; align-items: center; gap: 8px; font-size: 1.2rem; font-weight: 900; margin-bottom: 8px; }
+#explanation-text { font-size: 0.92rem; font-weight: 600; margin-bottom: 14px; }
+.trophy-icon, .gameover-icon { font-size: 3.5rem; text-align: center; margin-bottom: 10px; }
+.stats-row { display: flex; gap: 12px; margin: 18px 0; }
+.stat-box { flex: 1; border: 2px solid var(--card-border); border-radius: 16px; padding: 12px; text-align: center; }
+.stat-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); }
+.stat-value { display: block; font-size: 1.3rem; font-weight: 900; color: var(--duo-green); margin-top: 4px; }
+.duo-message { text-align: center; color: var(--text-muted); font-weight: 700; margin-bottom: 18px; }
+.action-buttons { display: flex; flex-direction: column; gap: 10px; }
