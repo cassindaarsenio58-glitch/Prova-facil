@@ -9,8 +9,8 @@ import io
 
 app = Flask(__name__)
 
-# Chave do OpenRouter obtida das variáveis de ambiente
-OPENROUTER_API_KEY = os.environ.get("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")
+# Coloca a tua chave do OpenRouter diretamente entre as aspas:
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "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")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 @app.route('/')
@@ -22,18 +22,17 @@ def gerar_quiz():
     modo = request.form.get('modo', 'disciplina')
     disciplina = request.form.get('disciplina', 'Informática')
 
-    # Instrução direta reforçando a saída apenas em JSON
     prompt_instrucoes = f"""
     Cria EXATAMENTE 15 PERGUNTAS ÚNICAS de escolha múltipla sobre {disciplina}.
 
-    [REGRAS]
-    - QUANTIDADE OBRIGATÓRIA: EXATAMENTE 15 PERGUNTAS.
+    [REGRAS OBRIGATÓRIAS]
+    - QUANTIDADE: EXATAMENTE 15 PERGUNTAS.
     - DISCIPLINA: {disciplina}
-    - NENHUMA PERGUNTA PODE SER REPETIDA.
+    - NENHUMA PERGUNTA REPETIDA.
     - Respostas teóricas e académicas rigorosas.
 
-    [FORMATO OBRIGATÓRIO DE RESPOSTA]
-    Responde APENAS com um array JSON válido sem texto antes ou depois, seguindo este formato:
+    [FORMATO EXCLUSIVO DE RESPOSTA]
+    Responde APENAS com uma estrutura JSON sem qualquer texto adicional fora do JSON:
     [
       {{
         "pergunta": "Enunciado da pergunta...",
@@ -52,6 +51,7 @@ def gerar_quiz():
     }
 
     try:
+        # Lógica para processar foto/imagem enviada
         if modo == 'foto' and 'foto' in request.files and request.files['foto'].filename != '':
             ficheiro = request.files['foto']
             imagem = Image.open(ficheiro.stream)
@@ -62,43 +62,41 @@ def gerar_quiz():
             img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
             image_data_url = f"data:image/jpeg;base64,{img_str}"
 
-            prompt_final = f"{prompt_instrucoes}\n\nAnalisa a foto anexada e gera 15 perguntas baseadas no seu conteúdo."
-            
+            prompt_final = f"{prompt_instrucoes}\n\nAnalisa a imagem anexada e gera 15 perguntas baseadas no seu conteúdo."
             messages_content = [
                 {"type": "text", "text": prompt_final},
                 {"type": "image_url", "image_url": {"url": image_data_url}}
             ]
         else:
-            prompt_final = f"{prompt_instrucoes}\n\nGera 15 perguntas inéditas sobre {disciplina}."
+            prompt_final = f"{prompt_instrucoes}\n\nGera 15 perguntas inéditas para a disciplina de {disciplina}."
             messages_content = prompt_final
 
-        # Usa modelo gratuito por padrão ou a rota gratuita universal do OpenRouter
-        model_name = "google/gemini-flash-1.5-exp:free"
-
+        # Payload usando a rota de modelos gratuitos do OpenRouter
         payload = {
-            "model": model_name,
+            "model": "google/gemini-flash-1.5-exp:free",
             "messages": [
-                {"role": "system", "content": "És um gerador automático de testes. Responde APENAS no formato JSON solicitado."},
+                {"role": "system", "content": "És um gerador de testes escolares. Responde EXCLUSIVAMENTE num array JSON válido."},
                 {"role": "user", "content": messages_content}
             ],
             "temperature": 0.3,
             "max_tokens": 4096
         }
 
-        response = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=35)
+        # Primeira tentativa de chamada à API
+        response = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=40)
         
-        # Tenta rota de modelos grátis alternativa caso o modelo principal falhe
+        # Se o modelo exp:free falhar, tenta o fallback para o modelo gratuito padrão
         if response.status_code != 200:
-            print(f"⚠️ Erro {response.status_code} no modelo principal. A tentar rota gratuita 'openrouter/free'...")
+            print(f"⚠️ Erro {response.status_code}. Tentando modelo alternativo 'openrouter/free'...")
             payload["model"] = "openrouter/free"
-            response = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=35)
+            response = requests.post(OPENROUTER_URL, headers=headers, json=payload, timeout=40)
 
         response.raise_for_status()
         
         data = response.json()
         texto = data['choices'][0]['message']['content'].strip()
 
-        # Extração limpa do bloco JSON
+        # Extração e limpeza do JSON caso a IA inclua blocos de código
         if "```json" in texto:
             texto = texto.split("```json")[1].split("```")[0].strip()
         elif "```" in texto:
@@ -108,7 +106,7 @@ def gerar_quiz():
         if isinstance(quiz_data, dict) and "perguntas" in quiz_data:
             quiz_data = quiz_data["perguntas"]
 
-        # Embaralhar as opções e ajustar o índice correto
+        # Baralhar as alternativas para cada pergunta
         perguntas_vistas = set()
         quiz_limpo = []
         for q in quiz_data:
@@ -122,10 +120,10 @@ def gerar_quiz():
         return jsonify({"perguntas": quiz_limpo[:15]})
 
     except Exception as e:
-        print(f"❌ Erro na requisição OpenRouter: {e}")
+        print(f"❌ Erro ao conectar à API do OpenRouter: {e}")
         return jsonify({
             "error": True,
-            "message": "Ocorreu um erro ao gerar o quiz na API. Verifica se a chave OPENROUTER_API_KEY está configurada no Render."
+            "message": "Erro ao gerar as perguntas. Confirma se a tua chave do OpenRouter está ativa e se tens ligação à internet."
         }), 500
 
 if __name__ == '__main__':
