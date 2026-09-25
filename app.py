@@ -10,7 +10,7 @@ import io
 app = Flask(__name__)
 
 # Coloca a tua chave do OpenRouter diretamente entre as aspas:
-OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "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")
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 @app.route('/')
